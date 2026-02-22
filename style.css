@@ -1,0 +1,676 @@
+/* ============================================
+   Variables (pastel pink/purple/white theme)
+   ============================================ */
+:root {
+  --bg-start: #ffe6f2;
+  --bg-end: #f3e7ff;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --accent-pink: #ff9ac4;
+  --accent-purple: #c08bff;
+  --text-main: #4a345a;
+  --text-soft: #7c628f;
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.1);
+  --radius-card: 24px;
+  --radius-pill: 999px;
+  --ease-out: 300ms ease-out;
+  --ease-fast: 200ms ease-out;
+}
+
+/* ============================================
+   Reset & body
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: "Poppins", system-ui, sans-serif;
+  background: radial-gradient(circle at top left, var(--bg-start), var(--bg-end));
+  color: var(--text-main);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   Main card
+   ============================================ */
+.card {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--card-bg);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 28px 24px 32px;
+  text-align: center;
+  z-index: 2;
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card-header {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: "Dancing Script", "Poppins", sans-serif;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent-purple);
+  margin: 0;
+  text-shadow: 0 4px 14px rgba(121, 63, 182, 0.2);
+}
+
+.intro-text {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+}
+
+/* ============================================
+   Animated countdown 3 → 2 → 1 (not real time)
+   ============================================ */
+.countdown-wrap {
+  margin-bottom: 20px;
+}
+
+.countdown-label {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+}
+
+.countdown-big {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.countdown-big .countdown-num {
+  font-family: "Dancing Script", "Poppins", sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--accent-purple);
+  line-height: 1;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.countdown-big .countdown-num.tick {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.countdown-big .countdown-num.pop {
+  animation: countdownPop 0.5s ease-out forwards;
+}
+
+@keyframes countdownPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* After countdown: hide so only title + button remain */
+.countdown-wrap.done {
+  display: none;
+}
+
+.intro-text.hide-with-countdown {
+  display: none;
+}
+
+/* Surprise button: hidden during countdown, fade in only after confetti finishes */
+.surprise-wrap {
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+}
+
+.surprise-wrap.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 10px 22px rgba(255, 143, 188, 0.4);
+  transition: transform var(--ease-fast), box-shadow var(--ease-fast), filter var(--ease-fast);
+}
+
+.primary-button:hover,
+.secondary-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 26px rgba(255, 143, 188, 0.5);
+  filter: brightness(1.05);
+}
+
+.primary-button:active,
+.secondary-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.primary-button:focus-visible,
+.secondary-button:focus-visible {
+  outline: 3px solid rgba(255, 154, 196, 0.8);
+  outline-offset: 3px;
+}
+
+.secondary-button {
+  margin-top: 10px;
+}
+
+.secondary-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+  transform: none;
+}
+
+/* ============================================
+   STEP 2 container – below title, never covers it
+   ============================================ */
+.step-two {
+  display: none;
+  flex-shrink: 0;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 154, 196, 0.2);
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.step-two.show {
+  display: block;
+}
+
+.scene {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   Cake with number candles \"22\"
+   ============================================ */
+.cake-wrapper {
+  flex: 0 0 auto;
+}
+
+.cake {
+  position: relative;
+  width: 200px;
+}
+
+.cake-base {
+  width: 200px;
+  height: 52px;
+  background: linear-gradient(180deg, #ffc3e1 0%, #ff9ac4 50%, #f08ab8 100%);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 20px rgba(255, 122, 170, 0.4);
+}
+
+.cake-top {
+  width: 170px;
+  height: 48px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #ffe6f2 0%, #ffb8d9 50%, #ff9ac4 100%);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -4px 12px rgba(255, 182, 218, 0.5);
+  position: relative;
+  top: -4px;
+}
+
+.number-candles {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.number-candle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.candle-body {
+  width: 32px;
+  height: 48px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff5f8 0%, #ffe0ec 60%, #ffc3e1 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--accent-purple);
+  font-size: 1.4rem;
+}
+
+/* Glowing flame on top of each number candle */
+.flame {
+  width: 16px;
+  height: 22px;
+  background: radial-gradient(ellipse at 50% 100%, #fff4a0, #ffdd66 30%, #ff9944 60%, #ff6633 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  margin-bottom: -2px;
+  animation: flicker 0.6s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+  box-shadow: 0 0 14px rgba(255, 153, 68, 0.7);
+}
+
+.cake.blown .flame {
+  animation: blowOut 0.5s ease-out forwards;
+}
+
+/* Smoke above candle (visible after blow) */
+.smoke {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 6px;
+  background: radial-gradient(circle, rgba(120, 120, 120, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cake.blown .smoke {
+  animation: smokeRise 1.2s ease-out forwards;
+}
+
+@keyframes smokeRise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5);
+  }
+  30% {
+    opacity: 0.5;
+    transform: translate(-50%, -8px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -26px) scale(1.8);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    transform: scale(1) translateX(0) rotate(-2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.08) translateX(1px) rotate(2deg);
+    opacity: 0.95;
+  }
+}
+
+@keyframes blowOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.3) translateY(-4px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0) translateY(-8px);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   Bouquets left & right (Step 3)
+   ============================================ */
+.bouquet {
+  position: relative;
+  width: 70px;
+  height: 100px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bouquet-left {
+  transform-origin: right bottom;
+}
+
+.bouquet-right {
+  transform-origin: left bottom;
+}
+
+.bouquet.show {
+  visibility: visible;
+  animation: bouquetPop 0.6s ease-out forwards;
+}
+
+.bouquet-right.show {
+  animation: bouquetPopRight 0.6s ease-out forwards;
+}
+
+.rose-bud {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle at 30% 30%, #ffb8d9, #e84a7a 60%, #c41e5a);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(196, 30, 90, 0.4);
+}
+
+.rose-bud-1 { top: 10px; left: 6px; }
+.rose-bud-2 { top: 0; left: 26px; }
+.rose-bud-3 { top: 20px; left: 30px; }
+
+.stem {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 10px;
+  height: 50px;
+  background: linear-gradient(180deg, #3c6b2a, #234218);
+  border-radius: 0 0 10px 10px;
+  transform: translateX(-50%);
+}
+
+@keyframes bouquetPop {
+  0% {
+    opacity: 0;
+    visibility: visible;
+    transform: scale(0.5) translateX(10px) translateY(20px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateX(0) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(0) translateY(0);
+  }
+}
+
+@keyframes bouquetPopRight {
+  0% {
+    opacity: 0;
+    visibility: visible;
+    transform: scale(0.5) translateX(-10px) translateY(20px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateX(0) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(0) translateY(0);
+  }
+}
+
+/* ============================================
+   Text under cake & buttons
+   ============================================ */
+.wish-text {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+}
+
+.blow-button.hidden {
+  display: none;
+}
+
+.love-letter-wrap {
+  display: none;
+  margin-top: 20px;
+}
+
+.love-letter-wrap.show {
+  display: block;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Love letter section (same page, revealed when "Open Love Letter" is clicked) */
+.love-letter-section {
+  display: none;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 154, 196, 0.3);
+}
+
+.love-letter-section.show {
+  display: block;
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.love-letter-section .letter-photo-frame {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 24px;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #ffe6f2, #f3e7ff);
+  padding: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.love-letter-section .letter-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.love-letter-section .letter-message {
+  font-family: "Dancing Script", "Poppins", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.85;
+  text-align: center;
+}
+
+/* ============================================
+   Floating hearts background
+   ============================================ */
+.hearts-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #ffeef6, #ff7eb8);
+  transform: rotate(45deg);
+  border-radius: 4px;
+  opacity: 0.7;
+  box-shadow: 0 6px 14px rgba(255, 126, 184, 0.4);
+  animation: floatHearts 12s linear infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -9px;
+  left: 0;
+}
+
+.heart::after {
+  left: -9px;
+  top: 0;
+}
+
+.heart-1 { left: 10%; animation-duration: 11s; animation-delay: 0s;   }
+.heart-2 { left: 25%; animation-duration: 9s;  animation-delay: -2s;  transform: scale(0.9) rotate(45deg);  }
+.heart-3 { left: 40%; animation-duration: 12s; animation-delay: -4s;  transform: scale(1.1) rotate(45deg);  }
+.heart-4 { left: 55%; animation-duration: 10s; animation-delay: -1s;  transform: scale(0.85) rotate(45deg); }
+.heart-5 { left: 70%; animation-duration: 13s; animation-delay: -5s;  transform: scale(1.05) rotate(45deg); }
+.heart-6 { left: 82%; animation-duration: 9.5s; animation-delay: -3s;  transform: rotate(45deg); }
+.heart-7 { left: 15%; animation-duration: 14s; animation-delay: -6s;  transform: scale(0.8) rotate(45deg);  }
+.heart-8 { left: 65%; animation-duration: 10.5s; animation-delay: -7s;  transform: scale(1.15) rotate(45deg); }
+
+@keyframes floatHearts {
+  0% {
+    transform: translateY(100vh) scale(1) rotate(45deg);
+    opacity: 0;
+  }
+  8% { opacity: 0.65; }
+  90% { opacity: 0.8; }
+  100% {
+    transform: translateY(-12vh) scale(1.05) rotate(45deg);
+    opacity: 0;
+  }
+}
+/* ============================================
+   Confetti canvas
+   ============================================ */
+#confettiCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ============================================
+   Page load animation
+   ============================================ */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 520px) {
+  body { padding: 16px; }
+  .card { padding: 20px 16px 24px; }
+  .scene { gap: 10px; }
+  .cake { width: 170px; }
+  .cake-base { width: 170px; height: 44px; }
+  .cake-top { width: 145px; height: 40px; }
+  .candle-body { width: 28px; height: 42px; font-size: 1.25rem; }
+  .letter-photo-frame { width: 160px; height: 160px; }
+  .letter-message { font-size: 1.15rem; }
+}
+
+/* ============================================
+   Letter page (letter.html)
+   ============================================ */
+body.letter-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: "Poppins", system-ui, sans-serif;
+  background: radial-gradient(circle at top left, var(--bg-start), var(--bg-end));
+  color: var(--text-main);
+}
+
+.letter-page .card {
+  max-width: 440px;
+  padding: 32px 24px 40px;
+}
+
+.letter-page .title {
+  margin-bottom: 24px;
+}
+
+.letter-photo-frame {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 24px;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #ffe6f2, #f3e7ff);
+  padding: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.letter-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.letter-message {
+  font-family: "Dancing Script", "Poppins", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.85;
+  text-align: center;
+}
